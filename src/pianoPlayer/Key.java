@@ -5,15 +5,14 @@ import javax.sound.sampled.*;
 
 public class Key {
 	private MusicPlayer musicPlayer;
-	private StopTimer stopTimer;
 	
 	//内部类 MusicPlayer
 	private class MusicPlayer implements Runnable {
-	    File soundFile; // 音乐文件
-	    Thread thread;// 父线程
-	    boolean continuePlay=true;
-	    float volumePercent;	//0到1的float
-	    boolean volumeNeedTemperoryChange=false;
+		private File soundFile; // 音乐文件
+		private Thread thread;// 父线程
+		private boolean continuePlay=true;
+		private float volumePercent;	//0到1的float
+		private boolean volumeNeedTemperoryChange=false;
 	    
 	    //构造方法: 传入音乐路径，播放音乐
 	    public MusicPlayer(String filepath) throws FileNotFoundException {
@@ -22,16 +21,17 @@ public class Key {
 	    }
 
 	    //播放
-	    public void play() {
-	    	play(1);
+	    public void play(int duation) {
+	    	play(duation,1);
 	    }
 	    
 	  //播放
-	    public void play(float volumePercent) {
+	    public void play(int duation,float volumePercent) {
 	    	this.volumePercent=volumePercent;
 	    	continuePlay=true;
 	        thread = new Thread(this);// 创建线程对象
 	        thread.start();// 开启线程
+	        new StopTimer(duation,MusicPlayer.this);
 	    }
 	    
 	    //停止播放
@@ -96,10 +96,12 @@ public class Key {
 	
 	//内部类 StopTimer
 	private class StopTimer implements Runnable {
-		Thread thread;	// 父线程
-		int duation;	//计时（毫秒）
-		public void timerStart(int duation) {
+		private Thread thread;	// 父线程
+		private int duation;	//计时（毫秒）
+		private MusicPlayer musicPlayer;
+		public StopTimer(int duation,MusicPlayer musicPlayer) {
 			this.duation=duation;
+			this.musicPlayer=musicPlayer;
 			thread = new Thread(this);// 创建线程对象
 	        thread.start();// 开启线程
 		}
@@ -118,24 +120,21 @@ public class Key {
 	
 	//构造方法
 	public Key(int keyNumber) {
-		String filePath="piano88keys/tone ("+keyNumber+").wav";
+		String filePath="pianoKeys/tone ("+keyNumber+").wav";
 		try {
 			musicPlayer=new MusicPlayer(filePath);
 		} catch (FileNotFoundException e) {
 			// TODO 自动生成的 catch 块
 			e.printStackTrace();
 		}
-		stopTimer= new StopTimer();
 	}
 	
 	//键盘播放
 	public void play(int duation) {
-		musicPlayer.play();
-		stopTimer.timerStart(duation);
+		musicPlayer.play(duation);
     }
 	
 	public void play(int duation,float volume) {
-		musicPlayer.play(volume);
-		stopTimer.timerStart(duation);
+		musicPlayer.play(duation,volume);
     }
 }

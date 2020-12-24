@@ -51,6 +51,9 @@ public class MainFrame extends JFrame{
 				setLocation(x,y);
 				return y>=height;
 			}
+//			public void remove() {
+//				layeredPane.remove(SnowLabel.this);
+//			}
 		}
 		
 		class SnowMoveThread implements Runnable{
@@ -103,7 +106,7 @@ public class MainFrame extends JFrame{
 		class SnowMoveThreadController{
 			private Map<Integer,SnowMoveThread> map = new HashMap<>();
 			public void addNewSnowLabel(int startX,int speed) {
-				System.out.println("SnowMoveThreadControllerÌí¼Ó:"+startX+","+speed);
+				//System.out.println("SnowMoveThreadControllerÌí¼Ó:"+startX+","+speed);
 				SnowLabel snowLabel = new SnowLabel(startX);
 				int _speed=speed/30*30;
 				SnowMoveThread snowMoveThread = map.get(_speed);

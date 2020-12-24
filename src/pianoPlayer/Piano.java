@@ -40,9 +40,9 @@ public class Piano {
 	public void playStar() {
 		class playStarThread implements Runnable{   //连接房间的线程
 	    	private int majorMove=5;
-	    	private int speed=60;
+	    	private int speed=120;
 	    	private int beat=60000/speed;
-	    	private int playBeat=40000/speed;
+	    	private int playBeat=50000/speed;
 	    	private int counter=0;
 			public void play(int key,int beatUp,int beatDown) {
 				keys[key+majorMove].play(playBeat*beatUp/beatDown);
@@ -80,7 +80,7 @@ public class Piano {
 		    		//+#6	62
 		    		//+7	63
 		    		counter=0;
-		    		//try {Thread.sleep(500);} catch (InterruptedException e) {}
+//		    		try {Thread.sleep(500);} catch (InterruptedException e) {}
 		    		play(47,2);//5
 		    		play(47,2);//5
 		    		play(56,2);//3
